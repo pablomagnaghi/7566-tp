@@ -34,6 +34,7 @@ public class Inicio extends View<InicioController> {
 		JButton btnNewButton = new JButton("Iniciar Proceso");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				getController().handleButtonIniciar();
 			}
 		});
 		btnNewButton.setBounds(127, 30, 195, 60);
@@ -42,6 +43,7 @@ public class Inicio extends View<InicioController> {
 		JButton btnConsulta = new JButton("Consulta");
 		btnConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				getController().handleButtonIniciar();
 			}
 		});
 		btnConsulta.setBounds(127, 102, 195, 65);
