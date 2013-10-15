@@ -77,14 +77,15 @@ public class Ladrillo {
 	}
 
 	private void asignarDimensiones() {
-		this.setAltura2(getDimension(this.getAltura1(), getResAltura()));
-		this.setAncho2(getDimension(this.getAncho1(), getResAncho()));
-		this.setLargo2(getDimension(this.getLargo1(), getResLargo()));
+		this.setAltura2(getDimension(this.getAltura1(), Constants.alto));
+		this.setAncho2(getDimension(this.getAncho1(), Constants.ancho));
+		this.setLargo2(getDimension(this.getLargo1(), Constants.largo));
 	}
 	
-	private Double getDimension(Integer dimensionBase, Resultado prueba){
+	private Double getDimension(Integer dimensionBase, String dimension){
 		Integer random = Utils.getRandom(0, 100);
 		Double result = dimensionBase.doubleValue();
+		Resultado prueba;
 		if (random < Constants.limiteBueno){
 			Integer randomIncrease = Utils.getRandom(0, 2);
 			result += (dimensionBase * randomIncrease /100);
@@ -97,6 +98,13 @@ public class Ladrillo {
 			Integer randomIncrease = Utils.getRandom(6, 10);
 			result += (dimensionBase * randomIncrease /100);
 			prueba = Resultado.MALO;
+		}
+		if (Constants.alto.equals(dimension)){
+			resAltura = prueba;
+		}else if (Constants.ancho.equals(dimension)){
+			resAncho = prueba;
+		} else {
+			resLargo = prueba;
 		}
 		return result;
 	}

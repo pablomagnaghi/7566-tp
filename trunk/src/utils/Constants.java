@@ -7,6 +7,12 @@ public class Constants {
 	public static Integer largoEstandard = 20;
 	public static Integer limiteBueno = 80;
 	public static Integer limiteRegular = 95;
+	public static String alto = "Alto";
+	public static String ancho = "Ancho";
+	public static String largo = "Largo";
+	public static int tiempoSimulacion = 1000;
+	public static String separador = "-------------------\r\n";
+	
 	public static String dimensionOk(String string) {
 		return "El campo " + string + " esta correcto en sus dimensiones\r\n";
 	}

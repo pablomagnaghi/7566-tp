@@ -33,25 +33,25 @@ public class Progreso extends View<ProgresoController>{
 	 */
 	public Progreso() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 617, 535);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		progressBar = new JProgressBar();
-		progressBar.setBounds(114, 38, 208, 24);
+		progressBar.setBounds(122, 29, 349, 48);
 		contentPane.add(progressBar);
 		progressBar.setValue(0);
         progressBar.setStringPainted(true);
 		
 		startButton = new JButton("Comenzar");
-		startButton.setBounds(172, 246, 117, 25);
+		startButton.setBounds(245, 468, 117, 40);
 		contentPane.add(startButton);
 		startButton.setActionCommand("start");
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(58, 90, 333, 144);
+		scrollPane.setBounds(58, 90, 501, 366);
 		contentPane.add(scrollPane);
 		
 		taskOutput = new JTextArea();
@@ -72,6 +72,7 @@ public class Progreso extends View<ProgresoController>{
 	}
 
 	public void disableButtons() {
+		taskOutput.setText("");
 		startButton.setEnabled(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
 	}
@@ -79,7 +80,7 @@ public class Progreso extends View<ProgresoController>{
 	public void notifyEndOfProgress() {
         startButton.setEnabled(true);
         setCursor(null); //turn off the wait cursor
-        taskOutput.append("Done!\n");
+        taskOutput.append("Fin del lote de ladrillos!\n");
 	}
 
 	public void setChanges(int progress, String string) {

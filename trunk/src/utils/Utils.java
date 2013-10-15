@@ -17,11 +17,11 @@ public class Utils {
 		Integer cantMalas = getCant(dimension, temperatura, 
 				 velocidad, dureza, Resultado.MALO);
 		if (cantMalas > 1 ){
-			return "El ladrillo se considera MALO";
+			return "El ladrillo se considera MALO\r\n";
 		} else if (cantBuenas > 1 && cantMalas == 0){
-			return "El ladrillo se considera BUENO";
+			return "El ladrillo se considera BUENO\r\n";
 		} else {
-			return "El ladrillo se considera REGULAR";
+			return "El ladrillo se considera REGULAR\r\n";
 		}
 	}
 	
