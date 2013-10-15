@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.swing.SwingWorker;
 
 import model.Ladrillo;
+import utils.Constants;
 import utils.Utils;
 import utils.Utils.Resultado;
 import view.Progreso;
@@ -33,44 +34,49 @@ public class ProgresoController extends Controller implements PropertyChangeList
             HandlerLadrillos handler = new HandlerLadrillos();
             while (handler.getCantLadrillos() < 10) {
             	try {
-            		StringBuffer reporte = new StringBuffer("Ladrillo nro " + handler.getCantLadrillos());
-            		StringBuffer reporteDimension = new StringBuffer();
+            		StringBuffer reporte = new StringBuffer();
+            		StringBuffer reporteDimension = new StringBuffer("Ladrillo nro " + handler.getCantLadrillos() + "\r\n");
             		StringBuffer reporteTemperatura = new StringBuffer();
             		StringBuffer reporteUltraSonido = new StringBuffer();
             		StringBuffer reporteDureza = new StringBuffer();
             		
             		Ladrillo l = new Ladrillo();
 					Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension );
-            		progress += 2.5;
-            		Thread.sleep(random.nextInt(100));
+            		progress += 3;
+            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
             		setProgress(progress);
             		setMessage(reporteDimension.toString());
             		reporte.append(reporteDimension);
 
 					Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura);
-            		progress += 2.5;
-            		Thread.sleep(random.nextInt(100));
+            		progress += 3;
+            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
             		setProgress(progress);
             		setMessage(reporteTemperatura.toString());
             		reporte.append(reporteTemperatura);
 
 					Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido);
-            		progress += 2.5;
-            		Thread.sleep(random.nextInt(100));
+            		progress += 3;
+            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
             		setProgress(progress);
             		setMessage(reporteUltraSonido.toString());
             		reporte.append(reporteUltraSonido);
 
 					Resultado resultadoDureza = l.testearDureza(reporteDureza);
-            		progress += 2.5;
-            		Thread.sleep(random.nextInt(100));
+            		progress += 1;
+            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
+            		String resultadoFinal = (Utils.definirResultadoLadrillo(resultadoDimensiones, resultadoTemperatura, 
+            				resultadoUltraSonido, resultadoDureza));
+            		reporteDureza.append(resultadoFinal);
+            		reporte.append(reporteDureza);
+
+            		reporteDureza.append("Fin ladrillo " + handler.getCantLadrillos() + "\r\n");
+            		reporteDureza.append(Constants.separador);
             		setProgress(progress);
             		setMessage(reporteDureza.toString());
-            		reporte.append(reporteDureza);
             		
-            		reporte.append(Utils.definirResultadoLadrillo(resultadoDimensiones, resultadoTemperatura, 
-            				resultadoUltraSonido, resultadoDureza));
             		handler.addLadrillo(l, reporte.toString());
+            		
             		
             	} catch (InterruptedException ignore) {}
             }
