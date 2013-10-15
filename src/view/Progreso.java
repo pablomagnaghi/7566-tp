@@ -1,12 +1,8 @@
 package view;
 
 import java.awt.Cursor;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,12 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 import controller.ProgresoController;
 
-public class Progreso extends View<ProgresoController> implements ActionListener, PropertyChangeListener{
+public class Progreso extends View<ProgresoController>{
 
 	/**
 	 * 
@@ -28,7 +23,6 @@ public class Progreso extends View<ProgresoController> implements ActionListener
 
 	private JProgressBar progressBar;
 	private JButton startButton;
-	private Task task;
 	private JTextArea taskOutput;
 	private JPanel contentPane;
 
@@ -62,73 +56,35 @@ public class Progreso extends View<ProgresoController> implements ActionListener
 		
 		taskOutput = new JTextArea();
 		scrollPane.setViewportView(taskOutput);
-        startButton.addActionListener(this);
+        startButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getController().handleButtonIniciar();
+			}
+		});
 	}
 
-	/**
-     * Invoked when the user presses the start button.
-     */
-    public void actionPerformed(ActionEvent evt) {
-        startButton.setEnabled(false);
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        //Instances of javax.swing.SwingWorker are not reusuable, so
-        //we create new instances as needed.
-        task = new Task();
-        task.addPropertyChangeListener(this);
-        task.execute();
-    }
-	
-    /**
-     * Invoked when task's progress property changes.
-     */
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName()) {
-            int progress = (Integer) evt.getNewValue();
-            progressBar.setValue(progress);
-            taskOutput.append(String.format(
-                    "Completed %d%% of task.\n", task.getProgress()));
-        }
-    }
- 
-    
 	public static Progreso getInstance() {
 		if (instance == null){
 			instance = new Progreso();
 		}
 		return instance;
 	}
-	
-	 class Task extends SwingWorker<Void, Void> {
-	        /*
-	         * Main task. Executed in background thread.
-	         */
-	        @Override
-	        public Void doInBackground() {
-	            Random random = new Random();
-	            int progress = 0;
-	            //Initialize progress property.
-	            setProgress(0);
-	            while (progress < 100) {
-	                //Sleep for up to one second.
-	                try {
-	                    Thread.sleep(random.nextInt(1000));
-	                } catch (InterruptedException ignore) {}
-	                //Make random progress.
-	                progress += random.nextInt(10);
-	                setProgress(Math.min(progress, 100));
-	            }
-	            return null;
-	        }
-	 
-	        /*
-	         * Executed in event dispatching thread
-	         */
-	        @Override
-	        public void done() {
-	            Toolkit.getDefaultToolkit().beep();
-	            startButton.setEnabled(true);
-	            setCursor(null); //turn off the wait cursor
-	            taskOutput.append("Done!\n");
-	        }
-	    }
+
+	public void disableButtons() {
+		startButton.setEnabled(false);
+		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
+	}
+
+	public void notifyEndOfProgress() {
+        startButton.setEnabled(true);
+        setCursor(null); //turn off the wait cursor
+        taskOutput.append("Done!\n");
+	}
+
+	public void setChanges(int progress, int progress2) {
+		  progressBar.setValue(progress);
+          taskOutput.append(String.format(
+                  "Completed %d%% of task.\n", progress2));
+	}
 }

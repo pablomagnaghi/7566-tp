@@ -23,6 +23,5 @@ public abstract class View<C extends Controller> extends JFrame {
 	public void display() {
 		this.setVisible(Boolean.TRUE);
 	}
-	
-	
+
 }
