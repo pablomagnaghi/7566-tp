@@ -82,9 +82,8 @@ public class Progreso extends View<ProgresoController>{
         taskOutput.append("Done!\n");
 	}
 
-	public void setChanges(int progress, int progress2) {
+	public void setChanges(int progress, String string) {
 		  progressBar.setValue(progress);
-          taskOutput.append(String.format(
-                  "Completed %d%% of task.\n", progress2));
+          taskOutput.append(string);
 	}
 }

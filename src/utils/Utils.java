@@ -10,18 +10,18 @@ public class Utils {
 	    MALO, REGULAR, BUENO 
 	}
 	
-	public static Resultado definirResultadoLadrillo(Resultado dimension, Resultado temperatura, 
+	public static String definirResultadoLadrillo(Resultado dimension, Resultado temperatura, 
 			Resultado velocidad, Resultado dureza){
 		Integer cantBuenas = getCant(dimension, temperatura, 
 				 velocidad, dureza, Resultado.BUENO);
 		Integer cantMalas = getCant(dimension, temperatura, 
 				 velocidad, dureza, Resultado.MALO);
 		if (cantMalas > 1 ){
-			return Resultado.MALO;
+			return "El ladrillo se considera MALO";
 		} else if (cantBuenas > 1 && cantMalas == 0){
-			return Resultado.BUENO;
+			return "El ladrillo se considera BUENO";
 		} else {
-			return Resultado.REGULAR;
+			return "El ladrillo se considera REGULAR";
 		}
 	}
 	
