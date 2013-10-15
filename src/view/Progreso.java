@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
@@ -24,13 +24,12 @@ public class Progreso extends View<ProgresoController> implements ActionListener
 	/**
 	 * 
 	 */
-	private JProgressBar progressBar;
-	private JButton startButton;
-	private JTextArea taskOutput;
-	private Task task;
-
 	private static final long serialVersionUID = 282453734915689789L;
 
+	private JProgressBar progressBar;
+	private JButton startButton;
+	private Task task;
+	private JTextArea taskOutput;
 	private JPanel contentPane;
 
 	private static Progreso instance;
@@ -56,12 +55,14 @@ public class Progreso extends View<ProgresoController> implements ActionListener
 		startButton.setBounds(172, 246, 117, 25);
 		contentPane.add(startButton);
 		startButton.setActionCommand("start");
-        startButton.addActionListener(this);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(58, 90, 333, 144);
+		contentPane.add(scrollPane);
 		
 		taskOutput = new JTextArea();
-		taskOutput.setBounds(61, 90, 324, 144);
-		taskOutput.setEditable(false);
-		contentPane.add(taskOutput);
+		scrollPane.setViewportView(taskOutput);
+        startButton.addActionListener(this);
 	}
 
 	/**
