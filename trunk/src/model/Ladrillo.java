@@ -6,9 +6,9 @@ import utils.Utils.Resultado;
 
 public class Ladrillo {
 	
-	private Integer altura1;
-	private Integer ancho1;
-	private Integer largo1;
+	private Double altura1;
+	private Double ancho1;
+	private Double largo1;
 	private Double altura2;
 	private Double ancho2;
 	private Double largo2;
@@ -37,13 +37,13 @@ public class Ladrillo {
 	private void asignarDureza() {
 		Integer random = Utils.getRandom(0, 100);
 		if (random < Constants.limiteBueno){
-			this.setVelocidad(Utils.getRandom(60, 80));
+			this.setDureza(Utils.getRandom(60, 80));
 			this.setResDureza(Resultado.BUENO);
 		} else if (random < Constants.limiteRegular){
-			this.setVelocidad(Utils.getRandom(40, 59));
+			this.setDureza(Utils.getRandom(40, 59));
 			this.setResDureza(Resultado.REGULAR);
 		} else {
-			this.setVelocidad(Utils.getRandom(0, 39));
+			this.setDureza(Utils.getRandom(0, 39));
 			this.setResDureza(Resultado.MALO);
 		}
 	}
@@ -82,7 +82,7 @@ public class Ladrillo {
 		this.setLargo2(getDimension(this.getLargo1(), Constants.largo));
 	}
 	
-	private Double getDimension(Integer dimensionBase, String dimension){
+	private Double getDimension(Double dimensionBase, String dimension){
 		Integer random = Utils.getRandom(0, 100);
 		Double result = dimensionBase.doubleValue();
 		Resultado prueba;
@@ -109,43 +109,73 @@ public class Ladrillo {
 		return result;
 	}
 	
-	public Resultado testearDimensiones(StringBuffer reporte){
+	public Resultado testearDimensiones(StringBuffer reporteDimension, StringBuffer reporte){
 		switch (resAltura) {
 		case BUENO:
-			reporte.append(Constants.dimensionOk("Altura"));
+			reporte.append(Constants.resultadoEnsayo("Altura", "BUENO"));
 			break;
 		case REGULAR:
-			reporte.append(Constants.dimensionRegular("Altura"));
+			reporte.append(Constants.resultadoEnsayo("Altura", "REGULAR"));
 			break;
 		default:
-			reporte.append(Constants.dimensionMal("Altura"));
+			reporte.append(Constants.resultadoEnsayo("Altura", "MALO"));
 			break;
 		}
+		this.agregarCaracteristicasAltura(reporte);
 		switch (resAncho) {
 		case BUENO:
-			reporte.append(Constants.dimensionOk("Ancho"));
+			reporte.append(Constants.resultadoEnsayo("Ancho", "BUENO"));
 			break;
 		case REGULAR:
-			reporte.append(Constants.dimensionRegular("Ancho"));
+			reporte.append(Constants.resultadoEnsayo("Ancho", "REGULAR"));
 			break;
 		default:
-			reporte.append(Constants.dimensionMal("Ancho"));
+			reporte.append(Constants.resultadoEnsayo("Ancho", "MALO"));
 			break;
 		}
+		this.agregarCaracteristicasAncho(reporte);
 		switch (resLargo) {
 		case BUENO:
-			reporte.append(Constants.dimensionOk("Largo"));
+			reporte.append(Constants.resultadoEnsayo("Largo", "BUENO"));
 			break;
 		case REGULAR:
-			reporte.append(Constants.dimensionRegular("Largo"));
+			reporte.append(Constants.resultadoEnsayo("Largo", "REGULAR"));
 			break;
 		default:
-			reporte.append(Constants.dimensionMal("Largo"));
+			reporte.append(Constants.resultadoEnsayo("Largo", "MALO"));
 			break;
 		}
-		return definirResultadoDimensiones();
+		this.agregarCaracteristicasLargo(reporte);
+		Resultado resultadoDimensiones = definirResultadoDimensiones();
+		switch(resultadoDimensiones){
+		case BUENO:
+			reporteDimension.append(Constants.resultadoEnsayo("Dimensión", "BUENO"));
+			reporte.append(Constants.resultadoEnsayo("Dimensión", "BUENO"));
+			break;
+		case REGULAR:
+			reporteDimension.append(Constants.resultadoEnsayo("Dimensión", "REGULAR"));
+			reporte.append(Constants.resultadoEnsayo("Dimensión", "REGULAR"));
+			break;
+		default:
+			reporteDimension.append(Constants.resultadoEnsayo("Dimensión", "MALO"));
+			reporte.append(Constants.resultadoEnsayo("Dimensión", "MALO"));
+			break;
+		}
+		return resultadoDimensiones;
 	}
 	
+	private void agregarCaracteristicasLargo(StringBuffer reporte) {
+		reporte.append("El largo medido para las puntas dio (" + this.largo1 +", " + this.largo2 + ")\r\n");
+	}
+
+	private void agregarCaracteristicasAncho(StringBuffer reporte) {
+		reporte.append("El ancho medido para las puntas dio (" + this.ancho1 +", " + this.ancho2 + ")\r\n");
+	}
+
+	private void agregarCaracteristicasAltura(StringBuffer reporte) {
+		reporte.append("La altura medida para las puntas dio (" + this.altura1 +", " + this.altura2 + ")\r\n");
+	}
+
 	private Resultado definirResultadoDimensiones() {
 		if (resAncho == Resultado.MALO || resLargo == Resultado.MALO || resAltura == Resultado.MALO){
 			return Resultado.MALO;
@@ -155,54 +185,58 @@ public class Ladrillo {
 		return Resultado.REGULAR;
 	}
 
-	private Resultado testearCampo(StringBuffer reporte, Resultado resCampo, String nombreCampo){
+	private Resultado testearCampo(StringBuffer reporteCampo, StringBuffer reporte, Resultado resCampo, String nombreCampo, Integer valor){
 		switch (resCampo) {
 		case BUENO:
-			reporte.append(Constants.campoOK(nombreCampo));
+			reporteCampo.append(Constants.resultadoEnsayo(nombreCampo, "BUENO"));
+			reporte.append(Constants.resultadoEnsayo(nombreCampo, "BUENO"));
 			break;
 		case REGULAR:
-			reporte.append(Constants.campoRegular(nombreCampo));
+			reporteCampo.append(Constants.resultadoEnsayo(nombreCampo, "REGULAR"));
+			reporte.append(Constants.resultadoEnsayo(nombreCampo, "BUENO"));
 			break;
 		default:
-			reporte.append(Constants.campoMal(nombreCampo));
+			reporteCampo.append(Constants.resultadoEnsayo(nombreCampo, "MALO"));
+			reporte.append(Constants.resultadoEnsayo(nombreCampo, "BUENO"));
 			break;
 		}
+		reporte.append("La medición de " + nombreCampo + " dio como resultado " + valor + "\r\n");
 		return resCampo;
 	}
 
-	public Resultado testearTemperatura(StringBuffer reporte){
-		return testearCampo(reporte, resTemperatura, "Temperatura");
+	public Resultado testearTemperatura(StringBuffer reporteTemperatura, StringBuffer reporte){
+		return testearCampo(reporteTemperatura, reporte, resTemperatura, "Temperatura", temperatura);
 	}
 	
-	public Resultado testearUltraSonido(StringBuffer reporte){
-		return testearCampo(reporte, resVelocidad, "Velocidad de ultrasonido");
+	public Resultado testearUltraSonido(StringBuffer reporteUltraSonido, StringBuffer reporte){
+		return testearCampo(reporteUltraSonido, reporte, resVelocidad, "Velocidad de ultrasonido", velocidad);
 	}
 	
-	public Resultado testearDureza(StringBuffer reporte){
-		return testearCampo(reporte, resDureza, "Dureza");
+	public Resultado testearDureza(StringBuffer reporteDureza, StringBuffer reporte){
+		return testearCampo(reporteDureza, reporte, resDureza, "Dureza", dureza);
 	}
 
-	public Integer getAltura1() {
+	public Double getAltura1() {
 		return altura1;
 	}
 
-	public void setAltura1(Integer altura1) {
+	public void setAltura1(Double altura1) {
 		this.altura1 = altura1;
 	}
 
-	public Integer getAncho1() {
+	public Double getAncho1() {
 		return ancho1;
 	}
 
-	public void setAncho1(Integer ancho1) {
+	public void setAncho1(Double ancho1) {
 		this.ancho1 = ancho1;
 	}
 
-	public Integer getLargo1() {
+	public Double getLargo1() {
 		return largo1;
 	}
 
-	public void setLargo1(Integer largo1) {
+	public void setLargo1(Double largo1) {
 		this.largo1 = largo1;
 	}
 

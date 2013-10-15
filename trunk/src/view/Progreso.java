@@ -46,7 +46,7 @@ public class Progreso extends View<ProgresoController>{
         progressBar.setStringPainted(true);
 		
 		startButton = new JButton("Comenzar");
-		startButton.setBounds(245, 468, 117, 40);
+		startButton.setBounds(122, 468, 117, 40);
 		contentPane.add(startButton);
 		startButton.setActionCommand("start");
 		
@@ -56,6 +56,16 @@ public class Progreso extends View<ProgresoController>{
 		
 		taskOutput = new JTextArea();
 		scrollPane.setViewportView(taskOutput);
+		
+		JButton button = new JButton("Exportar informe");
+		button.setBounds(352, 468, 161, 40);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getController().handleButtonExportar();
+			}
+		});
+		contentPane.add(button);
         startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

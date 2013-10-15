@@ -9,23 +9,31 @@ public class HandlerLadrillos {
 	private HashMap<Ladrillo, String> reportesLadrillos;
 	
 	public HandlerLadrillos(){
-		this.reportesLadrillos = new HashMap<Ladrillo, String>();
+		this.setReportesLadrillos(new HashMap<Ladrillo, String>());
 	}
 	
 	public void addLadrillo(Ladrillo l, String r){
-		this.reportesLadrillos.put(l, r);
+		this.getReportesLadrillos().put(l, r);
 	}
 	
 	public String reporte(){
 		StringBuffer reporteL = new StringBuffer();
-		for (Ladrillo l : reportesLadrillos.keySet()) {
-			reporteL.append(reportesLadrillos.get(l));
+		for (Ladrillo l : getReportesLadrillos().keySet()) {
+			reporteL.append(getReportesLadrillos().get(l));
 		}
 		return reporteL.toString();
 	}
 	
 	public Integer getCantLadrillos(){
-		return reportesLadrillos.size();
+		return getReportesLadrillos().size();
+	}
+
+	public HashMap<Ladrillo, String> getReportesLadrillos() {
+		return reportesLadrillos;
+	}
+
+	public void setReportesLadrillos(HashMap<Ladrillo, String> reportesLadrillos) {
+		this.reportesLadrillos = reportesLadrillos;
 	}
 	
 }
