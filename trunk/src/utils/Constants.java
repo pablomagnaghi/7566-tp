@@ -7,12 +7,16 @@ public class Constants {
 	public static Integer largoEstandard = 20;
 	public static Integer limiteBueno = 80;
 	public static Integer limiteRegular = 95;
+	public static Integer limiteFalla = 98;
 	public static String alto = "Alto";
 	public static String ancho = "Ancho";
 	public static String largo = "Largo";
 	public static int tiempoSimulacion = 1000;
 	public static String separador = "-------------------\r\n";
 	
+	public static String notificarFalla(String ensayo){
+		return "Ha ocurrido un error que no permite realizar el ensayo de "+ensayo+", chequee la maquinaria";
+	}
 	public static String dimensionOk(String string) {
 		return "El campo " + string + " esta correcto en sus dimensiones\r\n";
 	}

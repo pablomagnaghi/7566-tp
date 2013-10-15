@@ -7,6 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import model.Ladrillo;
@@ -41,6 +42,10 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		StringBuffer reporteDureza = new StringBuffer();
             		
             		Ladrillo l = new Ladrillo();
+            		Integer dimensionRandom = Utils.getRandom(0, 100);
+            		if (dimensionRandom > Constants.limiteFalla){
+            			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("Dimension"));
+            		}
 					Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension );
             		progress += 3;
             		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
@@ -48,13 +53,21 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		setMessage(reporteDimension.toString());
             		reporte.append(reporteDimension);
 
+            		Integer temperaturaRandom = Utils.getRandom(0, 100);
+            		if (temperaturaRandom > Constants.limiteFalla){
+            			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("Temperatura"));
+            		}
 					Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura);
             		progress += 3;
             		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
             		setProgress(progress);
             		setMessage(reporteTemperatura.toString());
             		reporte.append(reporteTemperatura);
-
+            		
+            		Integer ultraSonidoRandom = Utils.getRandom(0, 100);
+            		if (ultraSonidoRandom > Constants.limiteFalla){
+            			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("UltraSonido"));
+            		}
 					Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido);
             		progress += 3;
             		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
@@ -62,6 +75,10 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		setMessage(reporteUltraSonido.toString());
             		reporte.append(reporteUltraSonido);
 
+            		Integer durezaRandom = Utils.getRandom(0, 100);
+            		if (durezaRandom > Constants.limiteFalla){
+            			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("Dureza"));
+            		}
 					Resultado resultadoDureza = l.testearDureza(reporteDureza);
             		progress += 1;
             		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
@@ -76,7 +93,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		setMessage(reporteDureza.toString());
             		
             		handler.addLadrillo(l, reporte.toString());
-            		
+            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
             		
             	} catch (InterruptedException ignore) {}
             }
