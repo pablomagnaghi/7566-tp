@@ -147,7 +147,7 @@ public class Ladrillo {
 		return Resultado.REGULAR;
 	}
 
-	public Resultado testearCampo(StringBuffer reporte, Resultado resCampo, String nombreCampo){
+	private Resultado testearCampo(StringBuffer reporte, Resultado resCampo, String nombreCampo){
 		switch (resCampo) {
 		case BUENO:
 			reporte.append(Constants.campoOK(nombreCampo));

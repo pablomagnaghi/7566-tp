@@ -24,4 +24,8 @@ public class HandlerLadrillos {
 		return reporteL.toString();
 	}
 	
+	public Integer getCantLadrillos(){
+		return reportesLadrillos.size();
+	}
+	
 }
