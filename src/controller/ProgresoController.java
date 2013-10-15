@@ -5,7 +5,9 @@ import handler.HandlerLadrillos;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Random;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -19,6 +21,7 @@ import view.Progreso;
 public class ProgresoController extends Controller implements PropertyChangeListener{
 	
 	private Task task;
+	HandlerLadrillos handler;
 	
 	class Task extends SwingWorker<Void, Void> {
 		
@@ -29,14 +32,13 @@ public class ProgresoController extends Controller implements PropertyChangeList
          */
         @Override
         public Void doInBackground() {
-            Random random = new Random();
             int progress = 0;
             setProgress(0);
-            HandlerLadrillos handler = new HandlerLadrillos();
+            handler = new HandlerLadrillos();
             while (handler.getCantLadrillos() < 10) {
             	try {
             		StringBuffer reporte = new StringBuffer();
-            		StringBuffer reporteDimension = new StringBuffer("Ladrillo nro " + handler.getCantLadrillos() + "\r\n");
+            		StringBuffer reporteDimension = new StringBuffer("Ladrillo nro " + (handler.getCantLadrillos()+1) + "\r\n");
             		StringBuffer reporteTemperatura = new StringBuffer();
             		StringBuffer reporteUltraSonido = new StringBuffer();
             		StringBuffer reporteDureza = new StringBuffer();
@@ -46,54 +48,50 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		if (dimensionRandom > Constants.limiteFalla){
             			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("Dimension"));
             		}
-					Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension );
+					Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension, reporte);
             		progress += 3;
-            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
+            		Thread.sleep(Constants.tiempoSimulacion);
             		setProgress(progress);
             		setMessage(reporteDimension.toString());
-            		reporte.append(reporteDimension);
 
             		Integer temperaturaRandom = Utils.getRandom(0, 100);
             		if (temperaturaRandom > Constants.limiteFalla){
             			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("Temperatura"));
             		}
-					Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura);
+					Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura, reporte);
             		progress += 3;
-            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
+            		Thread.sleep(Constants.tiempoSimulacion);
             		setProgress(progress);
             		setMessage(reporteTemperatura.toString());
-            		reporte.append(reporteTemperatura);
             		
             		Integer ultraSonidoRandom = Utils.getRandom(0, 100);
             		if (ultraSonidoRandom > Constants.limiteFalla){
             			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("UltraSonido"));
             		}
-					Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido);
+					Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido, reporte);
             		progress += 3;
-            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
+            		Thread.sleep(Constants.tiempoSimulacion);
             		setProgress(progress);
             		setMessage(reporteUltraSonido.toString());
-            		reporte.append(reporteUltraSonido);
 
             		Integer durezaRandom = Utils.getRandom(0, 100);
             		if (durezaRandom > Constants.limiteFalla){
             			JOptionPane.showMessageDialog(getView(),Constants.notificarFalla("Dureza"));
             		}
-					Resultado resultadoDureza = l.testearDureza(reporteDureza);
+					Resultado resultadoDureza = l.testearDureza(reporteDureza, reporte);
             		progress += 1;
-            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
+            		Thread.sleep(Constants.tiempoSimulacion);
             		String resultadoFinal = (Utils.definirResultadoLadrillo(resultadoDimensiones, resultadoTemperatura, 
             				resultadoUltraSonido, resultadoDureza));
             		reporteDureza.append(resultadoFinal);
-            		reporte.append(reporteDureza);
 
-            		reporteDureza.append("Fin ladrillo " + handler.getCantLadrillos() + "\r\n");
+            		reporteDureza.append("Fin ladrillo " + (handler.getCantLadrillos()+1) + "\r\n");
             		reporteDureza.append(Constants.separador);
             		setProgress(progress);
             		setMessage(reporteDureza.toString());
             		
             		handler.addLadrillo(l, reporte.toString());
-            		Thread.sleep(random.nextInt(Constants.tiempoSimulacion));
+            		Thread.sleep(Constants.tiempoSimulacion);
             		
             	} catch (InterruptedException ignore) {}
             }
@@ -144,5 +142,27 @@ public class ProgresoController extends Controller implements PropertyChangeList
         	((Progreso)getView()).setChanges(progress, task.getMessage());
         }
     }
+
+	public void handleButtonExportar() {
+		if (handler == null){
+			JOptionPane.showMessageDialog(getView(),"No hay datos para exportar");
+		} else {
+			try {
+				FileWriter fw = new FileWriter(new File(Constants.salida));
+				Integer i = 1;
+				for (Ladrillo l: handler.getReportesLadrillos().keySet()) {
+					String string = handler.getReportesLadrillos().get(l);
+					fw.write("Ladrillo nro " + i + "\r\n");
+					fw.write(string);
+					fw.write(Constants.separador);
+					i++;
+				}
+				fw.close();
+				JOptionPane.showMessageDialog(getView(),"Datos exportados en: " + Constants.salida);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }
