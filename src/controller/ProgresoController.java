@@ -22,6 +22,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 	
 	private Task task;
 	HandlerLadrillos handler;
+	private InicioController controller;
 	
 	class Task extends SwingWorker<Void, Void> {
 		
@@ -163,6 +164,15 @@ public class ProgresoController extends Controller implements PropertyChangeList
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void handleButtonVolver() {
+		this.getView().setVisible(Boolean.FALSE);
+		this.controller.getView().display();		
+	}
+
+	public void setParent(InicioController inicioController) {
+		this.controller = inicioController;
 	}
 
 }

@@ -27,6 +27,7 @@ public class Progreso extends View<ProgresoController>{
 	private JPanel contentPane;
 
 	private static Progreso instance;
+	private JButton btnVolver;
 
 	/**
 	 * Create the frame.
@@ -46,7 +47,7 @@ public class Progreso extends View<ProgresoController>{
         progressBar.setStringPainted(true);
 		
 		startButton = new JButton("Comenzar");
-		startButton.setBounds(122, 468, 117, 40);
+		startButton.setBounds(40, 468, 117, 40);
 		contentPane.add(startButton);
 		startButton.setActionCommand("start");
 		
@@ -58,7 +59,7 @@ public class Progreso extends View<ProgresoController>{
 		scrollPane.setViewportView(taskOutput);
 		
 		JButton button = new JButton("Exportar informe");
-		button.setBounds(352, 468, 161, 40);
+		button.setBounds(210, 468, 161, 40);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -66,6 +67,16 @@ public class Progreso extends View<ProgresoController>{
 			}
 		});
 		contentPane.add(button);
+		
+		btnVolver = new JButton("Volver");
+		btnVolver.setBounds(414, 468, 161, 40);
+		btnVolver.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getController().handleButtonVolver();
+			}
+		});
+		contentPane.add(btnVolver);
         startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
