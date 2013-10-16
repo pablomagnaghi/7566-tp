@@ -8,7 +8,7 @@ public class Constants {
 	public static Double largoEstandard = 20.00;
 	public static Integer limiteBueno = 80;
 	public static Integer limiteRegular = 95;
-	public static Integer limiteFalla = 98;
+	public static Integer limiteFalla = 96;
 	public static String alto = "Alto";
 	public static String ancho = "Ancho";
 	public static String largo = "Largo";
