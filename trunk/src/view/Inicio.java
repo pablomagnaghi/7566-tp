@@ -31,19 +31,19 @@ public class Inicio extends View<InicioController> {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Iniciar Proceso");
+		JButton btnNewButton = new JButton("Encender Máquinas");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				getController().handleButtonIniciar();
+				getController().handleButtonEncenderMaquinas();
 			}
 		});
 		btnNewButton.setBounds(127, 30, 195, 60);
 		contentPane.add(btnNewButton);
 		
-		JButton btnConsulta = new JButton("Consulta");
+		JButton btnConsulta = new JButton("Iniciar Ensayos");
 		btnConsulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getController().handleButtonIniciar();
+				getController().handleButtonIniciarEnsayos();
 			}
 		});
 		btnConsulta.setBounds(127, 102, 195, 65);
