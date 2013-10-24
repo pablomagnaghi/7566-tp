@@ -36,6 +36,9 @@ public class ProgresoController extends Controller implements PropertyChangeList
             int progress = 0;
             setProgress(0);
             handler = new HandlerLadrillos();
+            Integer cantMalos = 0;
+            Integer cantBuenos = 0;
+            Integer cantRegulares = 0;
             while (handler.getCantLadrillos() < 10) {
             	try {
             		StringBuffer reporte = new StringBuffer();
@@ -84,6 +87,13 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		Thread.sleep(Constants.tiempoSimulacion);
             		String resultadoFinal = (Utils.definirResultadoLadrillo(resultadoDimensiones, resultadoTemperatura, 
             				resultadoUltraSonido, resultadoDureza));
+            		if (resultadoFinal.equals(Constants.ladrilloBueno)){
+            			cantBuenos++;
+            		} else if (resultadoFinal.equals(Constants.ladrilloMalo)){
+            			cantMalos++;
+            		} else{
+            			cantRegulares++;
+            		}
             		reporteDureza.append(resultadoFinal);
 
             		reporteDureza.append("Fin ladrillo " + (handler.getCantLadrillos()+1) + "\r\n");
@@ -96,6 +106,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
             		
             	} catch (InterruptedException ignore) {}
             }
+            handler.setReporteGlobal(cantBuenos, cantMalos, cantRegulares);
             return null;
         }
  
@@ -150,6 +161,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 		} else {
 			try {
 				FileWriter fw = new FileWriter(new File(Constants.salida));
+				fw.write(handler.getReporteGlobal());
 				Integer i = 1;
 				for (Ladrillo l: handler.getReportesLadrillos().keySet()) {
 					String string = handler.getReportesLadrillos().get(l);
