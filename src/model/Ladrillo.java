@@ -193,14 +193,21 @@ public class Ladrillo {
 			break;
 		case REGULAR:
 			reporteCampo.append(Constants.resultadoEnsayo(nombreCampo, "REGULAR"));
-			reporte.append(Constants.resultadoEnsayo(nombreCampo, "BUENO"));
+			reporte.append(Constants.resultadoEnsayo(nombreCampo, "REGULAR"));
 			break;
 		default:
 			reporteCampo.append(Constants.resultadoEnsayo(nombreCampo, "MALO"));
-			reporte.append(Constants.resultadoEnsayo(nombreCampo, "BUENO"));
+			reporte.append(Constants.resultadoEnsayo(nombreCampo, "MALO"));
 			break;
 		}
-		reporte.append("La medición de " + nombreCampo + " dio como resultado " + valor + "\r\n");
+		reporte.append("La medición de " + nombreCampo + " dio como resultado ");
+		if (nombreCampo.equals("Temperatura")){
+			reporte.append( valor + "°C \r\n");
+		} else if (nombreCampo.equals("Velocidad de ultrasonido")){
+			reporte.append( valor + " m/s \r\n");
+		} else {
+			reporte.append( valor + "\r\n");
+		}
 		return resCampo;
 	}
 

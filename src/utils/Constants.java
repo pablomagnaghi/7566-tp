@@ -14,6 +14,9 @@ public class Constants {
 	public static String largo = "Largo";
 	public static int tiempoSimulacion = 100;
 	public static String separador = "-------------------\r\n";
+	public static String ladrilloBueno = "El ladrillo se considera BUENO\r\n";
+	public static String ladrilloMalo = "El ladrillo se considera MALO\r\n";
+	public static String ladrilloRegular = "El ladrillo se considera REGULAR\r\n";
 	
 	public static String notificarFalla(String ensayo){
 		return "Ha ocurrido un error que no permite realizar el ensayo de "+ensayo+", chequee la maquinaria";

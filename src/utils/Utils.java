@@ -17,15 +17,15 @@ public class Utils {
 		Integer cantMalas = getCant(dimension, temperatura, 
 				 velocidad, dureza, Resultado.MALO);
 		if (cantMalas > 1 ){
-			return "El ladrillo se considera MALO\r\n";
+			return Constants.ladrilloMalo;
 		} else if (cantBuenas > 1 && cantMalas == 0){
-			return "El ladrillo se considera BUENO\r\n";
+			return Constants.ladrilloBueno;
 		} else {
-			return "El ladrillo se considera REGULAR\r\n";
+			return Constants.ladrilloRegular;
 		}
 	}
 	
-	private static Integer getCant(Resultado dimension, Resultado temperatura, 
+	public static Integer getCant(Resultado dimension, Resultado temperatura, 
 			Resultado velocidad, Resultado dureza, Resultado referencia){
 		Integer cant = 0;
 		if (dimension == referencia){
