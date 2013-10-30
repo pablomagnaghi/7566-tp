@@ -17,6 +17,7 @@ public abstract class View<C extends Controller> extends JFrame {
 	}
 
 	public void setController(C controller) {
+		this.setTitle("Control de calidad 1.0");
 		this.controller = controller;
 	}
 

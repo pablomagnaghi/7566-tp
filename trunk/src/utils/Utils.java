@@ -25,6 +25,22 @@ public class Utils {
 		}
 	}
 	
+	public static Resultado definirResultado(Resultado dimension, Resultado temperatura, 
+			Resultado velocidad, Resultado dureza){
+		Integer cantBuenas = getCant(dimension, temperatura, 
+				 velocidad, dureza, Resultado.BUENO);
+		Integer cantMalas = getCant(dimension, temperatura, 
+				 velocidad, dureza, Resultado.MALO);
+		if (cantMalas > 1 ){
+			return Resultado.MALO;
+		} else if (cantBuenas > 1 && cantMalas == 0){
+			return Resultado.BUENO;
+		} else {
+			return Resultado.REGULAR;
+		}
+	}
+	
+	
 	public static Integer getCant(Resultado dimension, Resultado temperatura, 
 			Resultado velocidad, Resultado dureza, Resultado referencia){
 		Integer cant = 0;

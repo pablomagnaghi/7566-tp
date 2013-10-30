@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.InicioController;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class Inicio extends View<InicioController> {
 
@@ -25,7 +28,7 @@ public class Inicio extends View<InicioController> {
 	 */
 	public Inicio() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 398);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -37,7 +40,7 @@ public class Inicio extends View<InicioController> {
 				getController().handleButtonEncenderMaquinas();
 			}
 		});
-		btnNewButton.setBounds(127, 30, 195, 60);
+		btnNewButton.setBounds(127, 118, 195, 60);
 		contentPane.add(btnNewButton);
 		
 		JButton btnConsulta = new JButton("Iniciar Ensayos");
@@ -46,7 +49,7 @@ public class Inicio extends View<InicioController> {
 				getController().handleButtonIniciarEnsayos();
 			}
 		});
-		btnConsulta.setBounds(127, 102, 195, 65);
+		btnConsulta.setBounds(127, 190, 195, 65);
 		contentPane.add(btnConsulta);
 		
 		JButton btnFinalizar = new JButton("Finalizar");
@@ -55,8 +58,14 @@ public class Inicio extends View<InicioController> {
 				getController().handleButtonFinalizar();
 			}
 		});
-		btnFinalizar.setBounds(127, 179, 195, 66);
+		btnFinalizar.setBounds(127, 267, 195, 66);
 		contentPane.add(btnFinalizar);
+		
+		JLabel lblNewLabel = new JLabel("Sistema de control de calidad");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblNewLabel.setBounds(54, 27, 349, 79);
+		contentPane.add(lblNewLabel);
 	}
 
 	public static Inicio getInstance() {
