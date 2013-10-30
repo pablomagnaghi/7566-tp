@@ -1,9 +1,16 @@
 package view;
 
 import java.awt.Cursor;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,6 +20,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import controller.ProgresoController;
+
+import javax.swing.JLabel;
 
 public class Progreso extends View<ProgresoController>{
 
@@ -29,12 +38,18 @@ public class Progreso extends View<ProgresoController>{
 	private static Progreso instance;
 	private JButton btnVolver;
 
+	private JButton btnContinuar;
+
+	private JLabel ladrillosLabel;
+
+	private JLabel semaforosLabel;
+
 	/**
 	 * Create the frame.
 	 */
 	public Progreso() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 617, 535);
+		setBounds(100, 100, 647, 590);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -47,19 +62,19 @@ public class Progreso extends View<ProgresoController>{
         progressBar.setStringPainted(true);
 		
 		startButton = new JButton("Comenzar");
-		startButton.setBounds(40, 468, 117, 40);
+		startButton.setBounds(40, 501, 117, 40);
 		contentPane.add(startButton);
 		startButton.setActionCommand("start");
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(58, 90, 501, 366);
+		scrollPane.setBounds(58, 90, 501, 199);
 		contentPane.add(scrollPane);
 		
 		taskOutput = new JTextArea();
 		scrollPane.setViewportView(taskOutput);
 		
 		JButton button = new JButton("Exportar informe");
-		button.setBounds(210, 468, 161, 40);
+		button.setBounds(210, 501, 161, 40);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -69,7 +84,7 @@ public class Progreso extends View<ProgresoController>{
 		contentPane.add(button);
 		
 		btnVolver = new JButton("Volver");
-		btnVolver.setBounds(414, 468, 161, 40);
+		btnVolver.setBounds(416, 501, 161, 40);
 		btnVolver.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,6 +92,25 @@ public class Progreso extends View<ProgresoController>{
 			}
 		});
 		contentPane.add(btnVolver);
+		
+		btnContinuar = new JButton("Continuar");
+		btnContinuar.setBounds(483, 40, 104, 25);
+		btnContinuar.setEnabled(Boolean.FALSE);
+		btnContinuar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getController().handleButtonContinuar();
+			}
+		});
+		contentPane.add(btnContinuar);
+		
+		ladrillosLabel = new JLabel();
+		ladrillosLabel.setBounds(40, 300, 353, 175);
+		contentPane.add(ladrillosLabel);
+		
+		semaforosLabel = new JLabel();
+		semaforosLabel.setBounds(406, 300, 170, 175);
+		contentPane.add(semaforosLabel);
         startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,17 +129,42 @@ public class Progreso extends View<ProgresoController>{
 	public void disableButtons() {
 		taskOutput.setText("");
 		startButton.setEnabled(false);
+		btnContinuar.setEnabled(Boolean.TRUE);
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
 	}
 
 	public void notifyEndOfProgress() {
         startButton.setEnabled(true);
+        btnContinuar.setEnabled(Boolean.FALSE);
         setCursor(null); //turn off the wait cursor
-        taskOutput.append("Fin del lote de ladrillos!\n");
+        taskOutput.append("Fin de evaluación de ladrillo!\n");
 	}
 
 	public void setChanges(int progress, String string) {
 		  progressBar.setValue(progress);
           taskOutput.append(string);
+	}
+
+	public void setImagenLadrillo(String ladrillo) {
+		Icon icon = this.setImageToLabel(ladrillo, 350, 200);
+		this.ladrillosLabel.setIcon(icon);
+	}
+
+	public void setImagenSemaforo(String semaforo) {
+		Icon icon = this.setImageToLabel(semaforo, 150, 200);
+		this.semaforosLabel.setIcon(icon);
+	}
+	
+
+	private Icon setImageToLabel(String path, Integer width, Integer height) {
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File(path));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(width, height,
+		        Image.SCALE_SMOOTH));
+		return imageIcon;
 	}
 }
