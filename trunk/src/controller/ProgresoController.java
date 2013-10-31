@@ -115,7 +115,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 					reporteDureza.append("Fin ladrillo " + (handler.getCantLadrillos()+1) + "\r\n");
 					reporteDureza.append(Constants.separador);
 					handler.addLadrillo(l, reporte.toString());
-					setImagenLadrillo(Constants.ladrilloFinal);
+					setImagenLadrillo(Constants.ladrillo);
 					setImagenSemaforo(null);
 					Thread.sleep(2000);
 					Resultado resultadoLadrillo = (Utils.definirResultado(resultadoDimensiones, resultadoTemperatura, 
@@ -128,7 +128,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 						setMessage("Ladrillo => MALO\r\n");
 					} else {
 						setProgress(progress);
-						setMessage("Ladrillo REGULAR\r\n");
+						setMessage("Ladrillo =>d REGULAR\r\n");
 					}
 					setImagenSemaforo(resultadoLadrillo);
 					progress = 0;
@@ -138,6 +138,8 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			setImagenLadrillo(Constants.ladrilloFinal);
+			setImagenSemaforo(null);
 			return null;
 		}
 
@@ -228,8 +230,11 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			view.setImagenLadrillo(Constants.ladrilloTemperatura);
 		} else if (Constants.velocidad.equals(test)){
 			view.setImagenLadrillo(Constants.ladrilloVelocidad);
+		} else if (Constants.ladrillo.equals(test)) {
+			view.setImagenLadrillo(Constants.ladrillo);
 		} else {
 			view.setImagenLadrillo(Constants.ladrilloFinal);
+	
 		}
 	}
 
