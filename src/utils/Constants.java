@@ -8,6 +8,8 @@ public class Constants {
 	public static final String ladrilloTemperatura = "/home/luisep/Escritorio/ladrillos/temperatura.jpg";
 	public static final String ladrilloVelocidad = "/home/luisep/Escritorio/ladrillos/ultrasonido.jpg";
 	public static final String ladrilloFinal = "/home/luisep/Escritorio/ladrillos/final.jpg";
+	public static final String ladrilloMaquinas = "/home/luisep/Escritorio/ladrillos/maquinas.jpg";
+
 	
 	public static final String semaforoApagado = "/home/luisep/Escritorio/semaforos/apagado.jpg";
 	public static final String semaforoVerde = "/home/luisep/Escritorio/semaforos/verde.jpg";
