@@ -34,10 +34,10 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			int progress = 0;
 			setProgress(0);
 			handler = new HandlerLadrillos();
-			StringBuffer reporte = new StringBuffer();
-
+			
 			try {
 				while(handler.getCantLadrillos() < 3){
+					StringBuffer reporte = new StringBuffer();
 					StringBuffer reporteDimension = new StringBuffer();
 					StringBuffer reporteTemperatura = new StringBuffer();
 					StringBuffer reporteUltraSonido = new StringBuffer();
@@ -122,18 +122,18 @@ public class ProgresoController extends Controller implements PropertyChangeList
 							resultadoUltraSonido, resultadoDureza));
 					if (resultadoLadrillo == Resultado.BUENO){
 						setProgress(progress);
-						setMessage("Ladrillo Bueno\r\n");							
+						setMessage("Ladrillo => BUENO\r\n");							
 					} else if (resultadoLadrillo == Resultado.MALO){
 						setProgress(progress);
-						setMessage("Ladrillo Malo\r\n");
+						setMessage("Ladrillo => MALO\r\n");
 					} else {
 						setProgress(progress);
-						setMessage("Ladrillo Regular\r\n");
+						setMessage("Ladrillo REGULAR\r\n");
 					}
 					setImagenSemaforo(resultadoLadrillo);
-					Thread.sleep(1000);
 					progress = 0;
 					setProgress(progress);
+					Thread.sleep(1000);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
