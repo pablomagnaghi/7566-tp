@@ -54,7 +54,7 @@ public class Progreso extends View<ProgresoController>{
 		contentPane.setLayout(null);
 		
 		progressBar = new JProgressBar();
-		progressBar.setBounds(122, 29, 349, 48);
+		progressBar.setBounds(136, 26, 349, 48);
 		contentPane.add(progressBar);
 		progressBar.setValue(0);
         progressBar.setStringPainted(true);
@@ -65,7 +65,7 @@ public class Progreso extends View<ProgresoController>{
 		startButton.setActionCommand("start");
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(58, 90, 501, 199);
+		scrollPane.setBounds(65, 290, 501, 199);
 		contentPane.add(scrollPane);
 		
 		taskOutput = new JTextArea();
@@ -92,11 +92,11 @@ public class Progreso extends View<ProgresoController>{
 		contentPane.add(btnVolver);
 		
 		ladrillosLabel = new JLabel();
-		ladrillosLabel.setBounds(40, 300, 353, 175);
+		ladrillosLabel.setBounds(40, 103, 353, 175);
 		contentPane.add(ladrillosLabel);
 		
 		semaforosLabel = new JLabel();
-		semaforosLabel.setBounds(406, 300, 170, 175);
+		semaforosLabel.setBounds(419, 103, 170, 175);
 		contentPane.add(semaforosLabel);
         startButton.addActionListener(new ActionListener() {
 			@Override
@@ -122,7 +122,7 @@ public class Progreso extends View<ProgresoController>{
 	public void notifyEndOfProgress() {
         startButton.setEnabled(true);
         setCursor(null); //turn off the wait cursor
-        taskOutput.append("Fin de evaluación de ladrillo!\n");
+        taskOutput.append("Fin de lote de ladrillos!\n");
 	}
 
 	public void setChanges(int progress, String string) {
