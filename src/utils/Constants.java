@@ -33,8 +33,8 @@ public class Constants {
 	public static String temperatura = "Temperatura";
 	public static String velocidad = "Velocidad";
 	public static String dureza = "Dureza";
-	public static String continuar = "Presione continuar para seguir el ensayo\r\n";
-	public static String continuarParaVerTotal = "Presione continuar para ver el estado final del ladrillo\r\n";
+	public static String continuar = "Fin del ensayo..\r\n";
+	public static String continuarParaVerTotal = "Fin del proceso, espere para ver el resultado final..\r\n";
 	
 	
 	public static String notificarFalla(String ensayo){

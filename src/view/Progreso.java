@@ -38,8 +38,6 @@ public class Progreso extends View<ProgresoController>{
 	private static Progreso instance;
 	private JButton btnVolver;
 
-	private JButton btnContinuar;
-
 	private JLabel ladrillosLabel;
 
 	private JLabel semaforosLabel;
@@ -93,17 +91,6 @@ public class Progreso extends View<ProgresoController>{
 		});
 		contentPane.add(btnVolver);
 		
-		btnContinuar = new JButton("Continuar");
-		btnContinuar.setBounds(483, 40, 104, 25);
-		btnContinuar.setEnabled(Boolean.FALSE);
-		btnContinuar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getController().handleButtonContinuar();
-			}
-		});
-		contentPane.add(btnContinuar);
-		
 		ladrillosLabel = new JLabel();
 		ladrillosLabel.setBounds(40, 300, 353, 175);
 		contentPane.add(ladrillosLabel);
@@ -129,13 +116,11 @@ public class Progreso extends View<ProgresoController>{
 	public void disableButtons() {
 		taskOutput.setText("");
 		startButton.setEnabled(false);
-		btnContinuar.setEnabled(Boolean.TRUE);
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
 	}
 
 	public void notifyEndOfProgress() {
         startButton.setEnabled(true);
-        btnContinuar.setEnabled(Boolean.FALSE);
         setCursor(null); //turn off the wait cursor
         taskOutput.append("Fin de evaluación de ladrillo!\n");
 	}
