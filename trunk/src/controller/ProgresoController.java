@@ -23,7 +23,6 @@ public class ProgresoController extends Controller implements PropertyChangeList
 
 	private Task task;
 	HandlerLadrillos handler;
-	Boolean activo = Boolean.FALSE;
 	private InicioController controller;
 
 	class Task extends SwingWorker<Void, Void> {
@@ -36,27 +35,28 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			setProgress(0);
 			handler = new HandlerLadrillos();
 			StringBuffer reporte = new StringBuffer();
-			StringBuffer reporteDimension = new StringBuffer("Ladrillo nro " + (handler.getCantLadrillos()+1) + "\r\n");
-			StringBuffer reporteTemperatura = new StringBuffer();
-			StringBuffer reporteUltraSonido = new StringBuffer();
-			StringBuffer reporteDureza = new StringBuffer();
-			Ladrillo l = new Ladrillo();
-			Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension, reporte);
-			Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura, reporte);
-			Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido, reporte);
-			Resultado resultadoDureza = l.testearDureza(reporteDureza, reporte);
+
 			try {
-				while (progress != 100){
-					if (activo == Boolean.TRUE){
+				while(handler.getCantLadrillos() < 3){
+					StringBuffer reporteDimension = new StringBuffer();
+					StringBuffer reporteTemperatura = new StringBuffer();
+					StringBuffer reporteUltraSonido = new StringBuffer();
+					StringBuffer reporteDureza = new StringBuffer();
+					Ladrillo l = new Ladrillo();
+					Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension, reporte);
+					Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura, reporte);
+					Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido, reporte);
+					Resultado resultadoDureza = l.testearDureza(reporteDureza, reporte);
+					while (progress != 100){
+						Thread.sleep(3000);
 						Boolean error = Boolean.FALSE;
-						activo = Boolean.FALSE;
 						Integer limite = progress+25;
 						String test;
 						progress++;
 						if (progress < 25){
 							test = Constants.dimension;
 							setProgress(progress);
-							setMessage("Realizando Test de Dimensión...\r\n");
+							setMessage("Ladrillo nro " + (handler.getCantLadrillos()+1) + "\r\n" + "Realizando Test de Dimensión...\r\n");
 						} else if (progress < 50 && progress > 25){
 							test = Constants.temperatura;
 							setProgress(progress);
@@ -108,38 +108,33 @@ public class ProgresoController extends Controller implements PropertyChangeList
 						}
 					}
 					Thread.sleep(1000);
-				}
-				
-				String resultadoFinal = (Utils.definirResultadoLadrillo(resultadoDimensiones, resultadoTemperatura, 
-						resultadoUltraSonido, resultadoDureza));
-				reporteDureza.append(resultadoFinal);
-				reporteDureza.append("Fin ladrillo " + (handler.getCantLadrillos()+1) + "\r\n");
-				reporteDureza.append(Constants.separador);
-				handler.addLadrillo(l, reporte.toString());
-				Boolean ciclar = Boolean.TRUE;
-				while(ciclar){
+
+					String resultadoFinal = (Utils.definirResultadoLadrillo(resultadoDimensiones, resultadoTemperatura, 
+							resultadoUltraSonido, resultadoDureza));
+					reporteDureza.append(resultadoFinal);
+					reporteDureza.append("Fin ladrillo " + (handler.getCantLadrillos()+1) + "\r\n");
+					reporteDureza.append(Constants.separador);
+					handler.addLadrillo(l, reporte.toString());
 					setImagenLadrillo(Constants.ladrilloFinal);
 					setImagenSemaforo(null);
-					if (activo){
-						Resultado resultadoLadrillo = (Utils.definirResultado(resultadoDimensiones, resultadoTemperatura, 
+					Thread.sleep(2000);
+					Resultado resultadoLadrillo = (Utils.definirResultado(resultadoDimensiones, resultadoTemperatura, 
 							resultadoUltraSonido, resultadoDureza));
-						if (resultadoLadrillo == Resultado.BUENO){
-							setProgress(progress);
-							setMessage("Ladrillo Bueno\r\n");							
-						} else if (resultadoLadrillo == Resultado.MALO){
-							setProgress(progress);
-							setMessage("Ladrillo Malo\r\n");
-						} else {
-							setProgress(progress);
-							setMessage("Ladrillo Regular\r\n");
-						}
-						setImagenSemaforo(resultadoLadrillo);
-						ciclar = Boolean.FALSE;
+					if (resultadoLadrillo == Resultado.BUENO){
+						setProgress(progress);
+						setMessage("Ladrillo Bueno\r\n");							
+					} else if (resultadoLadrillo == Resultado.MALO){
+						setProgress(progress);
+						setMessage("Ladrillo Malo\r\n");
+					} else {
+						setProgress(progress);
+						setMessage("Ladrillo Regular\r\n");
 					}
+					setImagenSemaforo(resultadoLadrillo);
 					Thread.sleep(1000);
+					progress = 0;
+					setProgress(progress);
 				}
-				
-				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -175,14 +170,9 @@ public class ProgresoController extends Controller implements PropertyChangeList
 	 */
 	public void handleButtonIniciar () {
 		((Progreso)getView()).disableButtons();
-		activo = Boolean.TRUE;
 		task = new Task();
 		task.addPropertyChangeListener(this);
 		task.execute();
-	}
-
-	public void handleButtonContinuar(){
-		activo = Boolean.TRUE;
 	}
 
 	/**
@@ -227,7 +217,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 	public void setParent(InicioController inicioController) {
 		this.controller = inicioController;
 	}
-	
+
 	private void setImagenLadrillo(String test) {
 		Progreso view = (Progreso)this.getView();
 		if (Constants.dureza.equals(test)){
