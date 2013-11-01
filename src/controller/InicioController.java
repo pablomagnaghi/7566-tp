@@ -25,7 +25,6 @@ public class InicioController extends Controller{
 	
 	public void handleButtonIniciarEnsayos(){
 		if (((EncenderMaquinas)encenderController.getView()).getEncendidas()){
-			this.controller.setParent(this);
 			this.getView().setVisible(Boolean.FALSE);
 			this.controller.getView().display();
 		} else {

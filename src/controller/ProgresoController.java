@@ -8,6 +8,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -17,14 +19,16 @@ import model.Ladrillo;
 import utils.Constants;
 import utils.Utils;
 import utils.Utils.Resultado;
+import view.Graficas;
 import view.Progreso;
 
 public class ProgresoController extends Controller implements PropertyChangeListener{
 
 	private Task task;
 	HandlerLadrillos handler;
-	private InicioController controller;
-
+	private GraficasController graficasController;
+	private Map<Resultado, Integer> cantLadrillos;
+	
 	class Task extends SwingWorker<Void, Void> {
 
 		private String message;
@@ -36,7 +40,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			handler = new HandlerLadrillos();
 			
 			try {
-				while(handler.getCantLadrillos() < 3){
+				while(handler.getCantLadrillos() < 10){
 					StringBuffer reporte = new StringBuffer();
 					StringBuffer reporteDimension = new StringBuffer();
 					StringBuffer reporteTemperatura = new StringBuffer();
@@ -122,13 +126,22 @@ public class ProgresoController extends Controller implements PropertyChangeList
 							resultadoUltraSonido, resultadoDureza));
 					if (resultadoLadrillo == Resultado.BUENO){
 						setProgress(progress);
-						setMessage("Ladrillo => BUENO\r\n");							
+						setMessage("Ladrillo => BUENO\r\n");	
+						Integer cantBuenos = cantLadrillos.get(Resultado.BUENO);
+						cantBuenos++;
+						cantLadrillos.put(Resultado.BUENO, cantBuenos);
 					} else if (resultadoLadrillo == Resultado.MALO){
 						setProgress(progress);
 						setMessage("Ladrillo => MALO\r\n");
+						Integer cantMalos = cantLadrillos.get(Resultado.MALO);
+						cantMalos++;
+						cantLadrillos.put(Resultado.MALO, cantMalos);
 					} else {
 						setProgress(progress);
-						setMessage("Ladrillo =>d REGULAR\r\n");
+						setMessage("Ladrillo => REGULAR\r\n");
+						Integer cantReg = cantLadrillos.get(Resultado.REGULAR);
+						cantReg++;
+						cantLadrillos.put(Resultado.REGULAR, cantReg);
 					}
 					setImagenSemaforo(resultadoLadrillo);
 					progress = 0;
@@ -165,6 +178,10 @@ public class ProgresoController extends Controller implements PropertyChangeList
 	public ProgresoController(Progreso view){
 		this.setView(view);
 		this.getView().setController(this);
+		this.cantLadrillos = new HashMap<Resultado, Integer>();
+		this.cantLadrillos.put(Resultado.BUENO, 0);
+		this.cantLadrillos.put(Resultado.MALO, 0);
+		this.cantLadrillos.put(Resultado.REGULAR, 0);
 	}
 
 	/**
@@ -211,13 +228,12 @@ public class ProgresoController extends Controller implements PropertyChangeList
 		}
 	}
 
-	public void handleButtonVolver() {
+	public void handleButtonGraficar() {
+		Graficas graficas = new Graficas(this.cantLadrillos);
+		this.graficasController = new GraficasController(graficas);
+		graficas.setController(this.graficasController);
 		this.getView().setVisible(Boolean.FALSE);
-		this.controller.getView().display();		
-	}
-
-	public void setParent(InicioController inicioController) {
-		this.controller = inicioController;
+		this.graficasController.getView().display();		
 	}
 
 	private void setImagenLadrillo(String test) {
