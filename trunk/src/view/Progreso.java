@@ -36,7 +36,7 @@ public class Progreso extends View<ProgresoController>{
 	private JPanel contentPane;
 
 	private static Progreso instance;
-	private JButton btnVolver;
+	private JButton btnGraficos;
 
 	private JLabel ladrillosLabel;
 
@@ -81,15 +81,15 @@ public class Progreso extends View<ProgresoController>{
 		});
 		contentPane.add(button);
 		
-		btnVolver = new JButton("Volver");
-		btnVolver.setBounds(416, 501, 161, 40);
-		btnVolver.addActionListener(new ActionListener() {
+		btnGraficos = new JButton("Gráficos");
+		btnGraficos.setBounds(416, 501, 161, 40);
+		btnGraficos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getController().handleButtonVolver();
+				getController().handleButtonGraficar();
 			}
 		});
-		contentPane.add(btnVolver);
+		contentPane.add(btnGraficos);
 		
 		ladrillosLabel = new JLabel();
 		ladrillosLabel.setBounds(40, 103, 353, 175);
