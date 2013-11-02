@@ -6,6 +6,8 @@ import utils.Utils.Resultado;
 
 public class Ladrillo {
 	
+	private Integer id;
+	
 	private Double altura1;
 	private Double ancho1;
 	private Double largo1;
@@ -24,10 +26,11 @@ public class Ladrillo {
 	private Resultado resVelocidad;
 	private Resultado resDureza;
 	
-	public Ladrillo(){
+	public Ladrillo(Integer id){
 		this.setAltura1(Constants.alturaEstandard);
 		this.setAncho1(Constants.anchoEstandard);
 		this.setLargo1(Constants.largoEstandard);
+		this.setId(id);
 		this.asignarDimensiones();
 		this.asignarTemperatura();
 		this.asignarVelocidad();
@@ -341,6 +344,14 @@ public class Ladrillo {
 
 	public void setResLargo(Resultado resLargo) {
 		this.resLargo = resLargo;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }
