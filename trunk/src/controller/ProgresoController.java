@@ -18,6 +18,7 @@ import javax.swing.SwingWorker;
 import model.Ladrillo;
 import utils.Constants;
 import utils.Utils;
+import utils.Utils.Ensayo;
 import utils.Utils.Resultado;
 import view.Graficas;
 import view.Progreso;
@@ -28,6 +29,8 @@ public class ProgresoController extends Controller implements PropertyChangeList
 	HandlerLadrillos handler;
 	private GraficasController graficasController;
 	private Map<Resultado, Integer> cantLadrillos;
+	private Map<Ladrillo, HashMap<Ensayo, Resultado>> estadisticasBarra;
+	private Map<Ensayo, Map<Resultado, Integer>> estadisticasEnsayo;
 	
 	class Task extends SwingWorker<Void, Void> {
 
@@ -38,7 +41,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			int progress = 0;
 			setProgress(0);
 			handler = new HandlerLadrillos();
-			
+			reiniciarEstadisticas();
 			try {
 				while(handler.getCantLadrillos() < 10){
 					StringBuffer reporte = new StringBuffer();
@@ -46,11 +49,21 @@ public class ProgresoController extends Controller implements PropertyChangeList
 					StringBuffer reporteTemperatura = new StringBuffer();
 					StringBuffer reporteUltraSonido = new StringBuffer();
 					StringBuffer reporteDureza = new StringBuffer();
-					Ladrillo l = new Ladrillo();
+					Ladrillo l = new Ladrillo(handler.getCantLadrillos()+1);
+					HashMap<Ensayo, Resultado> estadisticas = new HashMap<Ensayo, Resultado>();
 					Resultado resultadoDimensiones = l.testearDimensiones(reporteDimension, reporte);
+					estadisticas.put(Ensayo.DIMENSION, resultadoDimensiones);
+					asignarResultadoEnsayo(Ensayo.DIMENSION, resultadoDimensiones);
 					Resultado resultadoTemperatura = l.testearTemperatura(reporteTemperatura, reporte);
+					estadisticas.put(Ensayo.TEMPERATURA, resultadoTemperatura);
+					asignarResultadoEnsayo(Ensayo.TEMPERATURA, resultadoTemperatura);
 					Resultado resultadoUltraSonido = l.testearUltraSonido(reporteUltraSonido, reporte);
+					estadisticas.put(Ensayo.VELOCIDAD, resultadoUltraSonido);
+					asignarResultadoEnsayo(Ensayo.VELOCIDAD, resultadoUltraSonido);
 					Resultado resultadoDureza = l.testearDureza(reporteDureza, reporte);
+					estadisticas.put(Ensayo.DUREZA, resultadoDureza);
+					asignarResultadoEnsayo(Ensayo.DUREZA, resultadoDureza);
+					estadisticasBarra.put(l, estadisticas);
 					while (progress != 100){
 						Thread.sleep(3000);
 						Boolean error = Boolean.FALSE;
@@ -155,7 +168,6 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			setImagenSemaforo(null);
 			return null;
 		}
-
 		/*
 		 * Executed in event dispatching thread
 		 */
@@ -173,17 +185,59 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			this.message = message;
 		}
 	}
+	
+	private void asignarResultadoEnsayo(Ensayo dimension,	Resultado resultadoDimensiones) {
+		Map<Resultado, Integer> map = this.estadisticasEnsayo.get(dimension);
+		Integer integer = map.get(resultadoDimensiones);
+		integer = integer+ 1;
+		map.put(resultadoDimensiones, integer);
+		this.estadisticasEnsayo.put(dimension, map);
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public ProgresoController(Progreso view){
 		this.setView(view);
 		this.getView().setController(this);
+		this.reiniciarEstadisticas();
+	}
+
+	private void reiniciarEstadisticas(){
 		this.cantLadrillos = new HashMap<Resultado, Integer>();
 		this.cantLadrillos.put(Resultado.BUENO, 0);
 		this.cantLadrillos.put(Resultado.MALO, 0);
 		this.cantLadrillos.put(Resultado.REGULAR, 0);
-	}
+		this.estadisticasBarra = new HashMap<Ladrillo, HashMap<Ensayo, Resultado>>();
+		this.estadisticasEnsayo = new HashMap<Ensayo, Map<Resultado, Integer>>();
+		
+		Map<Resultado, Integer> map = new HashMap<Resultado, Integer>();
+		Map<Resultado, Integer> map2 = new HashMap<Resultado, Integer>();
+		Map<Resultado, Integer> map3 = new HashMap<Resultado, Integer>();
+		Map<Resultado, Integer> map4 = new HashMap<Resultado, Integer>();
+		
+		map.put(Resultado.BUENO, 0);
+		map.put(Resultado.MALO, 0);
+		map.put(Resultado.REGULAR, 0);
+		
+		map2.put(Resultado.BUENO, 0);
+		map2.put(Resultado.MALO, 0);
+		map2.put(Resultado.REGULAR, 0);
+		
+		map3.put(Resultado.BUENO, 0);
+		map3.put(Resultado.MALO, 0);
+		map3.put(Resultado.REGULAR, 0);
+		
+		map4.put(Resultado.BUENO, 0);
+		map4.put(Resultado.MALO, 0);
+		map4.put(Resultado.REGULAR, 0);
+		
+		this.estadisticasEnsayo.put(Ensayo.DIMENSION, map);
+		this.estadisticasEnsayo.put(Ensayo.DUREZA, map2);
+		this.estadisticasEnsayo.put(Ensayo.TEMPERATURA, map3);
+		this.estadisticasEnsayo.put(Ensayo.VELOCIDAD, map4);
 
+	}
+	
 	/**
 	 * Invoked when the user presses the start button.
 	 */
@@ -229,7 +283,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 	}
 
 	public void handleButtonGraficar() {
-		Graficas graficas = new Graficas(this.cantLadrillos);
+		Graficas graficas = new Graficas(this.cantLadrillos, this.estadisticasEnsayo);
 		this.graficasController = new GraficasController(graficas);
 		graficas.setController(this.graficasController);
 		this.getView().setVisible(Boolean.FALSE);

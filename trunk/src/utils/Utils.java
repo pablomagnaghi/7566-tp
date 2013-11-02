@@ -10,6 +10,10 @@ public class Utils {
 	    MALO, REGULAR, BUENO 
 	}
 	
+	public enum Ensayo {
+	    DIMENSION, TEMPERATURA, VELOCIDAD, DUREZA 
+	}
+	
 	public static String definirResultadoLadrillo(Resultado dimension, Resultado temperatura, 
 			Resultado velocidad, Resultado dureza){
 		Integer cantBuenas = getCant(dimension, temperatura, 
