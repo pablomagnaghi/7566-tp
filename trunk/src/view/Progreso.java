@@ -72,7 +72,7 @@ public class Progreso extends View<ProgresoController>{
 		scrollPane.setViewportView(taskOutput);
 		
 		JButton button = new JButton("Exportar informe");
-		button.setBounds(210, 501, 161, 40);
+		button.setBounds(219, 501, 161, 40);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +82,7 @@ public class Progreso extends View<ProgresoController>{
 		contentPane.add(button);
 		
 		btnGraficos = new JButton("Gráficos");
-		btnGraficos.setBounds(416, 501, 161, 40);
+		btnGraficos.setBounds(446, 501, 161, 40);
 		btnGraficos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,6 +98,7 @@ public class Progreso extends View<ProgresoController>{
 		semaforosLabel = new JLabel();
 		semaforosLabel.setBounds(419, 103, 170, 175);
 		contentPane.add(semaforosLabel);
+		
         startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

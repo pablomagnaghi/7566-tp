@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
-import java.util.HashMap;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 
-import model.Ladrillo;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -41,11 +43,11 @@ public class Graficas extends View<GraficasController> {
 	 * @param estadisticasEnsayo 
 	 */
 	public Graficas(Map<Resultado, Integer> cantLadrillos, Map<Ensayo, Map<Resultado, Integer>> estadisticasEnsayo) {
-
-		/*
-		 * Ejemplo grafico torta
-		 */
-		/*
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1000, 468);
+		getContentPane().setLayout(null);
+		
+		
 		PieDataset dataset = createDataset(cantLadrillos);
 		// based on the dataset we create the chart
 		JFreeChart chart = createChart(dataset, "Resumen Ladrillos");
@@ -54,16 +56,28 @@ public class Graficas extends View<GraficasController> {
 		// default size
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		// add it to our application
-		setContentPane(chartPanel);*/
+		chartPanel.setBounds(0, 0, 373, 394);
+		getContentPane().add(chartPanel);
 
 		/*
 		 * Ejemplo grfico barras
 		 */
-		final CategoryDataset dataset = createDatasetBar(estadisticasEnsayo);
-		final JFreeChart chart = createChartBar(dataset);
-		final ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new Dimension(500, 270));
-		setContentPane(chartPanel);
+		final CategoryDataset datasetBar = createDatasetBar(estadisticasEnsayo);
+		final JFreeChart chartBar = createChartBar(datasetBar);
+		final ChartPanel chartPanelBar = new ChartPanel(chartBar);
+		chartPanelBar.setPreferredSize(new Dimension(500, 270));
+		chartPanelBar.setBounds(379, 0, 652, 394);
+		getContentPane().add(chartPanelBar);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBounds(410, 406, 117, 36);
+		btnVolver.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getController().handleButtonVolver();
+			}
+		});
+		getContentPane().add(btnVolver);
 	}
 
 	private  PieDataset createDataset(Map<Resultado, Integer> cantLadrillos) {
@@ -107,9 +121,9 @@ public class Graficas extends View<GraficasController> {
 
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createBarChart(
-				"Bar Chart Demo",         // chart title
-				"Category",               // domain axis label
-				"Value",                  // range axis label
+				"Gráfico ensayos",         // chart title
+				"Ensayos",               // domain axis label
+				"Lote",                  // range axis label
 				dataset,                  // data
 				PlotOrientation.VERTICAL, // orientation
 				true,                     // include legend
@@ -137,7 +151,7 @@ public class Graficas extends View<GraficasController> {
 		renderer.setDrawBarOutline(false);
 
 		// set up gradient paints for series...
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.yellow, 
 				 0.0f, 0.0f, new Color(0, 0, 64));
 		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 
 				 0.0f, 0.0f, new Color(0, 64, 0));
@@ -182,19 +196,19 @@ public class Graficas extends View<GraficasController> {
 		dataset.addValue(temperatura.get(Resultado.REGULAR), regulares, ensayoTemperatura);
 		dataset.addValue(velocidad.get(Resultado.REGULAR), regulares, ensayoUltraSonido);
 		dataset.addValue(dureza.get(Resultado.REGULAR), regulares, ensayoDureza);
+		
+		dataset.addValue(dimension.get(Resultado.BUENO), buenas, ensayoDimension);
+		dataset.addValue(temperatura.get(Resultado.BUENO), buenas, ensayoTemperatura);
+		dataset.addValue(velocidad.get(Resultado.BUENO), buenas, ensayoUltraSonido);
+		dataset.addValue(dureza.get(Resultado.BUENO), buenas, ensayoDureza);
 
 		dataset.addValue(dimension.get(Resultado.MALO), malas, ensayoDimension);
 		dataset.addValue(temperatura.get(Resultado.MALO), malas, ensayoTemperatura);
 		dataset.addValue(velocidad.get(Resultado.MALO), malas, ensayoUltraSonido);
 		dataset.addValue(dureza.get(Resultado.MALO), malas, ensayoDureza);
 
-		dataset.addValue(dimension.get(Resultado.BUENO), buenas, ensayoDimension);
-		dataset.addValue(temperatura.get(Resultado.BUENO), buenas, ensayoTemperatura);
-		dataset.addValue(velocidad.get(Resultado.BUENO), buenas, ensayoUltraSonido);
-		dataset.addValue(dureza.get(Resultado.BUENO), buenas, ensayoDureza);
-
+		
 		return dataset;
 
 	}
-
 }

@@ -284,7 +284,7 @@ public class ProgresoController extends Controller implements PropertyChangeList
 
 	public void handleButtonGraficar() {
 		Graficas graficas = new Graficas(this.cantLadrillos, this.estadisticasEnsayo);
-		this.graficasController = new GraficasController(graficas);
+		this.graficasController = new GraficasController(graficas, this);
 		graficas.setController(this.graficasController);
 		this.getView().setVisible(Boolean.FALSE);
 		this.graficasController.getView().display();		
@@ -320,5 +320,6 @@ public class ProgresoController extends Controller implements PropertyChangeList
 			view.setImagenSemaforo(Constants.semaforoApagado);
 		}
 	}
+
 
 }
