@@ -27,7 +27,7 @@ public class Constants {
 	public static String alto = "Alto";
 	public static String ancho = "Ancho";
 	public static String largo = "Largo";
-	public static int tiempoSimulacion = 100;
+	public static int tiempoSimulacion = 50;
 	public static String separador = "-------------------\r\n";
 	public static String ladrilloBueno = "El ladrillo se considera BUENO\r\n";
 	public static String ladrilloMalo = "El ladrillo se considera MALO\r\n";
