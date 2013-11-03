@@ -42,6 +42,8 @@ public class Progreso extends View<ProgresoController>{
 
 	private JLabel semaforosLabel;
 
+	private JButton button;
+
 	/**
 	 * Create the frame.
 	 */
@@ -71,7 +73,7 @@ public class Progreso extends View<ProgresoController>{
 		taskOutput = new JTextArea();
 		scrollPane.setViewportView(taskOutput);
 		
-		JButton button = new JButton("Exportar informe");
+		button = new JButton("Exportar informe");
 		button.setBounds(219, 501, 161, 40);
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -117,11 +119,15 @@ public class Progreso extends View<ProgresoController>{
 	public void disableButtons() {
 		taskOutput.setText("");
 		startButton.setEnabled(false);
+		btnGraficos.setEnabled(Boolean.FALSE);
+		button.setEnabled(Boolean.FALSE);
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
 	}
 
 	public void notifyEndOfProgress() {
         startButton.setEnabled(true);
+		btnGraficos.setEnabled(Boolean.TRUE);
+		button.setEnabled(Boolean.TRUE);
         setCursor(null); //turn off the wait cursor
         taskOutput.append("Fin de lote de ladrillos!\n");
 	}
